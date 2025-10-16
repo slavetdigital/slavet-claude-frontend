@@ -1,0 +1,14 @@
+{
+  "name": "Slavet Marketplace",
+  "owner": {
+    "name": "Slav\u0113t Digital",
+    "url": "https://www.slavetdigital.com"
+  },
+  "plugins": [
+    {
+      "name": "slavet-claude-frontend",
+      "description": "Lightweight enterprise frontend assistant with DSL, MCP, auto-checks, tokens & contrast enforcement.",
+      "source": "./plugins/slavet-claude-frontend"
+    }
+  ]
+}
