@@ -1,27 +1,27 @@
 {
   "name": "slavet-claude-frontend",
   "version": "0.1.0",
-  "description": "Lightweight enterprise frontend assistant with tokens/contrast checks and resource-aware policies.",
-  "commands": [],
-  "hooks": [],
+  "description": "Enterprise frontend assistant with tokens & contrast checks, resource caps, and sub-agent orchestration.",
+  "entrypoints": {
+    "commands": "../commands/index.js",
+    "agents": "../agents/index.js",
+    "hooks": "../hooks/index.js"
+  },
   "config": {
-    "defaults": {
-      "maxPromptTokens": 4000,
-      "maxCompletionTokens": 1000,
-      "maxParallelRequests": 2,
-      "sessionTokenBudget": 100000,
-      "requireEvidence": true,
-      "denyOnInsufficientData": true,
-      "includeSourceCitations": true,
-      "supportedStacks": [
-        "html-css",
-        "tailwindcss",
-        "wordpress-php",
-        "javascript",
-        "react",
-        "nextjs",
-        "astro"
-      ]
+    "tokenCaps": {
+      "prompt": 4000,
+      "completion": 1000,
+      "parallel": 2,
+      "session": 100000
+    },
+    "strictEvidence": true,
+    "backgroundAudits": {
+      "enabled": true,
+      "maxDailyTokens": 15000
+    },
+    "interop": {
+      "detectSlavetPlugins": true,
+      "coordinateSubAgents": true
     }
   }
 }
