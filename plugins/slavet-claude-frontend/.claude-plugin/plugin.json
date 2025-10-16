@@ -1,0 +1,27 @@
+{
+  "name": "slavet-claude-frontend",
+  "version": "0.1.0",
+  "description": "Lightweight enterprise frontend assistant with tokens/contrast checks and resource-aware policies.",
+  "commands": [],
+  "hooks": [],
+  "config": {
+    "defaults": {
+      "maxPromptTokens": 4000,
+      "maxCompletionTokens": 1000,
+      "maxParallelRequests": 2,
+      "sessionTokenBudget": 100000,
+      "requireEvidence": true,
+      "denyOnInsufficientData": true,
+      "includeSourceCitations": true,
+      "supportedStacks": [
+        "html-css",
+        "tailwindcss",
+        "wordpress-php",
+        "javascript",
+        "react",
+        "nextjs",
+        "astro"
+      ]
+    }
+  }
+}

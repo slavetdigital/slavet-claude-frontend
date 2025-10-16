@@ -28,6 +28,11 @@ slavet-claude-frontend/
 - **Included plugin scaffold**: `slavet-claude-frontend` folder ready for your plugin files.
 - **Design tokens & contrast guidance**: See `guides/tokens-and-contrast.md` for enforcement strategy and checks.
 - **MCP-friendly**: Structure is compatible with Claude Code’s marketplace and plugin install flow.
+ - **Resource-efficient by design**: Guidance and configs to avoid excessive CPU/memory usage.
+ - **Context & credits budget control**: Recommend caps and policies to manage API usage wisely.
+ - **Claude ecosystem compatible**: Marketplace + plugin manifest align with Claude Code plugin requirements.
+ - **No hallucinations policy**: Evidence-based answers only; abstain when data is insufficient.
+ - **Multi-stack coverage**: Works with HTML/CSS, Tailwind CSS, WordPress/PHP, JS frameworks, React, Next.js, Astro, and more.
 
 ## Install and use
 
@@ -51,6 +56,8 @@ You can use this marketplace locally (no hosting required) or host it on GitHub 
 - Run `/plugin list` and ensure `slavet-claude-frontend` appears.
 - Check any commands or hooks you implement once you add real plugin files.
 
+If you add a `.claude-plugin/plugin.json` inside `plugins/slavet-claude-frontend`, Claude Code will recognize it as a valid plugin. This repo now includes a minimal manifest to ensure marketplace compatibility out of the box.
+
 ### Option B — GitHub hosted
 
 1) Push this repository to GitHub and ensure it’s publicly accessible (or accessible to your organization).
@@ -68,6 +75,33 @@ You can use this marketplace locally (no hosting required) or host it on GitHub 
 ```
 
 4) Verify with `/plugin list`.
+
+## Resource efficiency and context/credits policies
+
+To align with Untitled-1 requirements, the included plugin scaffold is documented with these default policies:
+
+- Keep operations lightweight and avoid expensive loops or full-repo indexing unless explicitly invoked.
+- Use conservative defaults for AI calls: small max tokens, streaming where possible, and short timeouts.
+- Respect a context/credits budget per session and per request; fail fast with a helpful message when limits are reached.
+- Batch requests where safe, cache deterministic results locally, and deduplicate identical prompts.
+
+Suggested baseline caps (tune per project):
+- Max prompt tokens per request: 4,000
+- Max completion tokens per request: 1,000
+- Max parallel AI requests: 2
+- Session credit budget: 100k tokens
+
+See `plugins/slavet-claude-frontend/README.md` for configuration examples.
+
+## No hallucinations policy
+
+The plugin is designed to avoid speculative or fabricated content. Commands should:
+
+- Rely only on available files, structured data, or configured knowledge sources.
+- Cite the exact files/lines or data keys used to produce answers when applicable.
+- Respond with a clear refusal (and guidance to gather missing info) when inputs are insufficient.
+
+Default config enables strict evidence requirements; see the plugin manifest and README for toggles.
 
 ## How the marketplace works
 
@@ -104,6 +138,7 @@ Suggested capabilities for a frontend-focused assistant:
 - Contrast checking with WCAG formula for defined `contrastPairs`
 - Linting or style checks aligned with your framework (React/Next, Vue, Svelte, etc.)
 - Accessibility nudges for form controls, ARIA, and focus management
+ - Resource-aware execution with request caps and context budgets
 
 ## Tokens & contrast best practices
 
