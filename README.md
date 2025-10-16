@@ -33,6 +33,9 @@ slavet-claude-frontend/
  - **Claude ecosystem compatible**: Marketplace + plugin manifest align with Claude Code plugin requirements.
  - **No hallucinations policy**: Evidence-based answers only; abstain when data is insufficient.
  - **Multi-stack coverage**: Works with HTML/CSS, Tailwind CSS, WordPress/PHP, JS frameworks, React, Next.js, Astro, and more.
+ - **Sub-agents support**: Designed to orchestrate sub-agents per Claude Code guidance for scoped tasks.
+ - **Interop with Slavet plugins**: Detects and cooperates with other Slavet plugins/agents when present.
+ - **Autonomous background audits**: Can run low-cost, non-blocking checks and notify you periodically.
 
 ## Install and use
 
@@ -103,6 +106,20 @@ The plugin is designed to avoid speculative or fabricated content. Commands shou
 
 Default config enables strict evidence requirements; see the plugin manifest and README for toggles.
 
+## Sub-agents and collaboration
+
+This marketplace and the `slavet-claude-frontend` plugin are structured to support sub-agents per Claude Code’s best practices:
+
+- Sub-agents are created for focused scopes (e.g., theme audit, plugin audit, contrast sweep) while the main agent maintains the primary workflow.
+- Sub-agents must operate within strict resource budgets and run in the background without blocking.
+- When a compatible Slavet plugin is detected, the system exchanges capabilities and coordinates tasks to avoid duplicated work and excess API calls.
+- Results are summarized and surfaced via periodic non-intrusive notifications; full reports are stored in project docs or logs.
+
+Recommended triggers:
+- On install or update: run a lightweight scan to detect frameworks, tokens, and available Slavet plugins.
+- On demand: `/agent audit theme` or `/agent audit plugin` to spawn a scoped sub-agent.
+- Scheduled (optional): background daily checks with token caps.
+
 ## How the marketplace works
 
 - The marketplace entry is defined at `.claude-plugin/marketplace.json` and includes the `slavet-claude-frontend` plugin using a local `source` path:
@@ -139,6 +156,35 @@ Suggested capabilities for a frontend-focused assistant:
 - Linting or style checks aligned with your framework (React/Next, Vue, Svelte, etc.)
 - Accessibility nudges for form controls, ARIA, and focus management
  - Resource-aware execution with request caps and context budgets
+
+### Minimal config example
+
+Add a `.claude-plugin/plugin.json` under `plugins/slavet-claude-frontend` with conservative defaults:
+
+```
+{
+  "name": "slavet-claude-frontend",
+  "version": "0.1.0",
+  "description": "Enterprise frontend assistant with tokens & contrast checks",
+  "config": {
+    "tokenCaps": {
+      "prompt": 4000,
+      "completion": 1000,
+      "parallel": 2,
+      "session": 100000
+    },
+    "strictEvidence": true,
+    "backgroundAudits": {
+      "enabled": true,
+      "maxDailyTokens": 15000
+    },
+    "interop": {
+      "detectSlavetPlugins": true,
+      "coordinateSubAgents": true
+    }
+  }
+}
+```
 
 ## Tokens & contrast best practices
 
